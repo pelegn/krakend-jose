@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/auth0-community/go-auth0"
 	"github.com/devopsfaith/krakend/proxy"
+	"github.com/pelegn/go-auth0"
 	jose "gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/jwt"
 )
@@ -35,6 +35,7 @@ func NewValidator(signatureConfig *SignatureConfig, ef ExtractorFactory) (*auth0
 		Fingerprints:  decodedFs,
 		LocalCA:       signatureConfig.LocalCA,
 		AllowInsecure: signatureConfig.DisableJWKSecurity,
+		KIDFormat:     signatureConfig.KIDFormat,
 	}
 
 	sp, err := SecretProvider(cfg, te)
@@ -51,6 +52,7 @@ func NewValidator(signatureConfig *SignatureConfig, ef ExtractorFactory) (*auth0
 		),
 		te,
 	), nil
+
 }
 
 func CanAccessNested(roleKey string, claims map[string]interface{}, required []string) bool {

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/auth0-community/go-auth0"
 	"github.com/devopsfaith/krakend/config"
+	"github.com/pelegn/go-auth0"
 	jose "gopkg.in/square/go-jose.v2"
 )
 
@@ -30,6 +30,7 @@ type SignatureConfig struct {
 	DisableJWKSecurity bool     `json:"disable_jwk_security"`
 	Fingerprints       []string `json:"jwk_fingerprints,omitempty"`
 	LocalCA            string   `json:"jwk_local_ca,omitempty"`
+	KIDFormat          string   `json:"kid_format,omitempty"`
 }
 
 type SignerConfig struct {

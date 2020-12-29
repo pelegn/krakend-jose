@@ -15,7 +15,7 @@ import (
 	"net/http"
 	"time"
 
-	auth0 "github.com/auth0-community/go-auth0"
+	auth0 "github.com/pelegn/go-auth0"
 )
 
 type SecretProviderConfig struct {
@@ -25,6 +25,7 @@ type SecretProviderConfig struct {
 	Cs            []uint16
 	LocalCA       string
 	AllowInsecure bool
+	KIDFormat     string
 }
 
 var (
@@ -71,11 +72,23 @@ func SecretProvider(cfg SecretProviderConfig, te auth0.RequestTokenExtractor) (*
 		transport.DialTLS = dialer.DialTLS
 	}
 
+	var keyIDGetter auth0.KeyIDGetter
+	var tokenGetter auth0.TokenIDGetter
+	if cfg.KIDFormat != "" {
+		switch cfg.KIDFormat {
+		case "SHA1":
+			keyIDGetter = auth0.KeyIDGetterFunc(auth0.CompoundSHA1KeyIDGetter)
+			tokenGetter = auth0.TokenKeyIDGetterFunc(auth0.CompoundSHA1TokenKeyIDGetter)
+		}
+	}
+
 	opts := auth0.JWKClientOptions{
 		URI: cfg.URI,
 		Client: &http.Client{
 			Transport: transport,
 		},
+		KeyIDGetter:   keyIDGetter,
+		TokenIDGetter: tokenGetter,
 	}
 
 	if !cfg.CacheEnabled {

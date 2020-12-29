@@ -3,18 +3,17 @@ package gin
 import (
 	"context"
 	"fmt"
-	"log"
-	"net/http"
-	"strings"
-
-	auth0 "github.com/auth0-community/go-auth0"
 	krakendjose "github.com/devopsfaith/krakend-jose"
 	"github.com/devopsfaith/krakend/config"
 	"github.com/devopsfaith/krakend/logging"
 	"github.com/devopsfaith/krakend/proxy"
 	ginkrakend "github.com/devopsfaith/krakend/router/gin"
 	"github.com/gin-gonic/gin"
+	auth0 "github.com/pelegn/go-auth0"
 	"gopkg.in/square/go-jose.v2/jwt"
+	"log"
+	"net/http"
+	"strings"
 )
 
 func HandlerFactory(hf ginkrakend.HandlerFactory, logger logging.Logger, rejecterF krakendjose.RejecterFactory) ginkrakend.HandlerFactory {
@@ -122,7 +121,6 @@ func TokenSignatureValidator(hf ginkrakend.HandlerFactory, logger logging.Logger
 				c.AbortWithStatus(http.StatusForbidden)
 				return
 			}
-
 			handler(c)
 		}
 	}
