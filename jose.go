@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/auth0-community/go-auth0"
+	"github.com/pelegn/go-auth0"
 	"github.com/devopsfaith/krakend/proxy"
 	jose "gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/jwt"
@@ -31,10 +31,11 @@ func NewValidator(signatureConfig *SignatureConfig, ef ExtractorFactory) (*auth0
 	cfg := SecretProviderConfig{
 		URI:           signatureConfig.URI,
 		CacheEnabled:  signatureConfig.CacheEnabled,
-		Cs:            signatureConfig.CipherSuites,
 		Fingerprints:  decodedFs,
+		Cs:            signatureConfig.CipherSuites,
 		LocalCA:       signatureConfig.LocalCA,
 		AllowInsecure: signatureConfig.DisableJWKSecurity,
+		KIDFormat:     signatureConfig.KIDFormat,
 	}
 
 	sp, err := SecretProvider(cfg, te)

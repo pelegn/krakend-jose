@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	auth0 "github.com/auth0-community/go-auth0"
+	auth0 "github.com/pelegn/go-auth0"
 	krakendjose "github.com/devopsfaith/krakend-jose"
 	"github.com/devopsfaith/krakend/config"
 	"github.com/devopsfaith/krakend/logging"
